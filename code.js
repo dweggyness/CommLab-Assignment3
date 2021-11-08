@@ -23,11 +23,15 @@ $('#audio').on('timeupdate', (e) => {
     container.removeClass('stage2');
   } else if (time >= 20 && time < 50) {
     curStage = 2;
-    frequencyOfShapes = 6;
+    frequencyOfShapes = 7;
     container.addClass('stage2');
     container.removeClass('stage1');
-  } else if (time >= 50) {
+  } else if (time >= 50 && time < 60) {
     curStage = 3;
+    container.addClass('stage1');
+    container.removeClass('stage2');
+  } else if (time >= 60) {
+    curStage = 4;
     frequencyOfShapes = 3;
     container.addClass('stage1');
     container.removeClass('stage2');
@@ -91,6 +95,9 @@ function shapeCreatorController() {
         curShape = new Triangle(startingX, scale);
         break;
       case 3:
+        return;
+        break;
+      case 4:
         curShape = new Circle(startingX, scale);
         break;
       default:
@@ -110,7 +117,6 @@ function shapeCreatorController() {
   } else { // don't create new shape this iteration, incremenet the guarantee so it is more likely
   // for a shape to be created in the next iteration
     shapeGuaranteeFactor += 0.1;
-    console.log(shapeGuaranteeFactor);
   }
 
 

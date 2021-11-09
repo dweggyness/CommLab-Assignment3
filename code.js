@@ -40,11 +40,11 @@ $('#audio').on('timeupdate', (e) => {
   } else if (time >= 65 && time < 90) { // tense music starts playing
     frequencyOfShapes = 7;
     setShapeColor('#d17034');
-    setShape('triangle')
+    setShape('square')
     setBG('red');
   } else if (time >= 90 && time < 96) { // door not opening
     frequencyOfShapes = 10;
-    setShapeColor('#cf4634');
+    setShapeColor('#d17034');
     setShape('triangle')
     setBG('red');
   } else if (time >= 96 && time < 115) { // eva: we gotta get out of here
@@ -60,7 +60,7 @@ $('#audio').on('timeupdate', (e) => {
   } else if (time >= 135 && time < 145) { // fade out scene
     setShape('none')
     setBG('white');
-  } else if (time >= 145) {
+  } else if (time >= 145) { // hospital scene
     frequencyOfShapes = 5;
     setShapeColor('#4287f5');
     setShape('circle');

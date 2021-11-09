@@ -61,8 +61,8 @@ $('#audio').on('timeupdate', (e) => {
     setShape('none')
     setBG('white');
   } else if (time >= 145) { // hospital scene
-    frequencyOfShapes = 5;
-    setShapeColor('#4287f5');
+    frequencyOfShapes = 3;
+    setShapeColor('#679cf0');
     setShape('circle');
     setBG('blue');
   }

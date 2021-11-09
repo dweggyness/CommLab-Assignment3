@@ -1,6 +1,17 @@
 
-let curStage = 1;
 let timer;
+
+
+// audio ended, show credits
+$('#audio').on('ended', () => {
+  shouldCreateNewShapes = false;
+  $('.credits').css('display', 'flex');
+})
+
+$('.credits').on('click', () => {
+  $('.credits').css('display', 'none');
+})
+
 
 $('#audio').on('play', () => {
   shouldCreateNewShapes = true;
@@ -13,30 +24,82 @@ $('#audio').on('pause', () => {
   shouldCreateNewShapes = false;
 })
 
+
 $('#audio').on('timeupdate', (e) => {
-  const container = $('.mainContainer');
   const time = e.target.currentTime // in seconds
-  if (time >= 0 && time < 20) {
-    curStage = 1;
+  if (time >= 0 && time < 30) { // begining scene, talk about project
     frequencyOfShapes = 3;
-    container.addClass('stage1');
-    container.removeClass('stage2');
-  } else if (time >= 20 && time < 50) {
-    curStage = 2;
+    setShape('square');
+    setShapeColor('#4287f5');
+    setBG('blue');
+  } else if (time >= 30 && time < 65) { // fire alarm starts
+    frequencyOfShapes = 5;
+    setShapeColor('#e08793');
+    setShape('square');
+    setBG('orange');
+  } else if (time >= 65 && time < 90) { // tense music starts playing
     frequencyOfShapes = 7;
-    container.addClass('stage2');
-    container.removeClass('stage1');
-  } else if (time >= 50 && time < 60) {
-    curStage = 3;
-    container.addClass('stage1');
-    container.removeClass('stage2');
-  } else if (time >= 60) {
-    curStage = 4;
-    frequencyOfShapes = 3;
-    container.addClass('stage1');
-    container.removeClass('stage2');
+    setShapeColor('#d17034');
+    setShape('triangle')
+    setBG('red');
+  } else if (time >= 90 && time < 96) { // door not opening
+    frequencyOfShapes = 10;
+    setShapeColor('#cf4634');
+    setShape('triangle')
+    setBG('red');
+  } else if (time >= 96 && time < 115) { // eva: we gotta get out of here
+    frequencyOfShapes = 13;
+    setShapeColor('#cf4634');
+    setShape('triangle')
+    setBG('darkred');
+  } else if (time >= 115 && time < 135) { // eva: we're all gonna die
+    frequencyOfShapes = 13;
+    setShapeColor('#cf4634');
+    setShape('triangle')
+    setBG('darkred');
+  } else if (time >= 135 && time < 145) { // fade out scene
+    setShape('none')
+    setBG('white');
+  } else if (time >= 145) {
+    frequencyOfShapes = 5;
+    setShapeColor('#4287f5');
+    setShape('circle');
+    setBG('blue');
   }
 })
+
+// square, triangle, circle
+function setShape(type = 'square') {
+  shapeType = type;
+}
+
+function setShapeColor(color = '#4287f5') {
+  shapeColor = color;
+}
+
+function setBG(color = 'blue') {
+  const container = $('.mainContainer');
+  switch (color) {
+    case 'red':
+      container.css('background', 'rgba(235, 150, 124, 0.7)');
+      break;
+    case 'darkred':
+      container.css('background', 'rgba(224, 118, 114, 0.7)');
+      break;
+    case 'orange':
+      container.css('background', 'rgba(230, 199, 154, 0.7)');
+      break;
+    case 'white':
+      container.css('background', 'rgba(209, 228, 232, 0.7)');
+      break;
+    case 'lightblue':
+      container.css('background', 'rgba(230, 230, 230, 0.7)');
+      break;
+    default: // blue
+      container.css('background', 'rgba(129, 208, 240, 0.7)');
+      break;
+  }
+}
 
 
 // rest of code is for drawing shapes
@@ -48,6 +111,9 @@ let shouldCreateNewShapes = true;
 let listOfShapes = []; // array containing all shape objects
 let frequencyOfShapes = 2; // used to change the rate that shapes sapwn
 let shapeGuaranteeFactor = 0;
+
+let shapeColor = '#4287f5';
+let shapeType = 'square';
 
 function startTimer() {
   clearInterval(timer);
@@ -78,7 +144,7 @@ function shapeCreatorController() {
   // a shape happening at each iteration. e.g freqShapes = 2, % of a shape created every 0.05s is
   // 2%. shapeGuaranteeFactor is used to reduce the chances of shapes not spawning for some time,
   // or too many spawning at the same time
-  if (Math.random() * 100 <= (frequencyOfShapes + shapeGuaranteeFactor)) {
+  if (Math.random() * 100 <= (frequencyOfShapes * (1 + shapeGuaranteeFactor))) {
     // random generate a coordinate in the X plane to generate the shape in
     const startingX = Math.random() * window.innerWidth;
     // randomly generate a number between 0.9-1.2, used to scale the shapes so they're not all
@@ -87,36 +153,33 @@ function shapeCreatorController() {
     const scale = 0.9 + (Math.random() * 0.3);
     let curShape;
   
-    switch (curStage) {
-      case 1:
-        curShape = new Square(startingX, scale);
+    switch (shapeType) {
+      case 'square':
+        curShape = new Square(startingX, shapeColor, scale);
         break;
-      case 2:
-        curShape = new Triangle(startingX, scale);
+      case 'triangle':
+        curShape = new Triangle(startingX, shapeColor, scale);
         break;
-      case 3:
-        return;
-        break;
-      case 4:
-        curShape = new Circle(startingX, scale);
+      case 'circle':
+        curShape = new Circle(startingX, shapeColor, scale);
         break;
       default:
-        curShape = new Square(startingX, scale);
+        return;
         break;
     }
   
     listOfShapes.push(curShape);
 
-    // reduce shapeGuarantee. minimum is -10, to prevent large clusters of shapes due to luck
-    if (shapeGuaranteeFactor > -10) {
-      shapeGuaranteeFactor -= 1.5;
+    // reduce shapeGuarantee. minimum is -0.5, to prevent large clusters of shapes due to luck
+    if (shapeGuaranteeFactor > -0.4) {
+      shapeGuaranteeFactor -= 0.15;
     } 
     if (shapeGuaranteeFactor > 0) {
       shapeGuaranteeFactor = 0;
     }
   } else { // don't create new shape this iteration, incremenet the guarantee so it is more likely
   // for a shape to be created in the next iteration
-    shapeGuaranteeFactor += 0.1;
+    shapeGuaranteeFactor += 0.07;
   }
 
 
@@ -124,9 +187,10 @@ function shapeCreatorController() {
 
 // main parent class
 class Shape {
-  constructor(x, r = 40) {
+  constructor(x, shapeColor, r = 40) {
     this.x = x;
     this.r = r;
+    this.shapeColor = shapeColor;
     this.y = window.innerHeight + this.r;
     this.speed = 5;
   }
@@ -149,28 +213,28 @@ class Shape {
 // all type of shapes extend from Shape
 
 class Square extends Shape {
-  constructor(x, scale) {
-    super(x, 50 * scale);
+  constructor(x, shapeColor, scale) {
+    super(x, shapeColor, 50 * scale);
   }
 
   draw() {
     var ctx = canvas.getContext('2d');
     
-    ctx.fillStyle = '#4287f5';
+    ctx.fillStyle = this.shapeColor;
     ctx.fillRect(this.x, this.y, this.r, this.r);
     this.step();
   }
 }
 
 class Triangle extends Shape {
-  constructor(x, scale = 1) {
-    super(x, 60 * scale);
+  constructor(x, shapeColor, scale = 1) {
+    super(x, shapeColor, 60 * scale);
   }
 
   draw() {
     var ctx = canvas.getContext('2d');
     
-    ctx.fillStyle = '#cf4634';
+    ctx.fillStyle = this.shapeColor;
     ctx.beginPath();
     ctx.moveTo(this.x, this.y);
     ctx.lineTo(this.x + this.r/2, this.y + this.r);
@@ -182,14 +246,14 @@ class Triangle extends Shape {
 }
 
 class Circle extends Shape {
-  constructor(x, scale = 1) {
-    super(x, 65 * scale);
+  constructor(x, shapeColor, scale = 1) {
+    super(x, shapeColor, 65 * scale);
   }
 
   draw() {
     var ctx = canvas.getContext('2d');
     
-    ctx.fillStyle = '#4287f5';
+    ctx.fillStyle = this.shapeColor;
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.r/2, 0, 2 * Math.PI);
     ctx.fill();

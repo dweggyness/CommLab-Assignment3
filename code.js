@@ -48,7 +48,7 @@ $('#audio').on('timeupdate', (e) => {
     setShape('triangle')
     setBG('red');
   } else if (time >= 96 && time < 115) { // eva: we gotta get out of here
-    frequencyOfShapes = 13;
+    frequencyOfShapes = 10;
     setShapeColor('#cf4634');
     setShape('triangle')
     setBG('darkred');

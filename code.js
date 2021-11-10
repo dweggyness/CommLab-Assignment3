@@ -27,40 +27,40 @@ $('#audio').on('pause', () => {
 
 $('#audio').on('timeupdate', (e) => {
   const time = e.target.currentTime // in seconds
-  if (time >= 0 && time < 30) { // begining scene, talk about project
+  if (time >= 0 && time < 35) { // begining scene, talk about project
     frequencyOfShapes = 3;
     setShape('square');
     setShapeColor('#4287f5');
     setBG('blue');
-  } else if (time >= 30 && time < 65) { // fire alarm starts
+  } else if (time >= 35 && time < 78) { // fire alarm starts
     frequencyOfShapes = 5;
     setShapeColor('#e08793');
     setShape('square');
     setBG('orange');
-  } else if (time >= 65 && time < 90) { // tense music starts playing
+  } else if (time >= 78 && time < 96) { // tense music starts playing
     frequencyOfShapes = 7;
     setShapeColor('#d17034');
     setShape('square')
     setBG('red');
-  } else if (time >= 90 && time < 96) { // door not opening
+  } else if (time >= 96 && time < 109) { // door not opening
     frequencyOfShapes = 10;
     setShapeColor('#d17034');
     setShape('triangle')
     setBG('red');
-  } else if (time >= 96 && time < 115) { // eva: we gotta get out of here
+  } else if (time >= 109 && time < 125) { // jun: i cant breath
     frequencyOfShapes = 10;
     setShapeColor('#cf4634');
     setShape('triangle')
     setBG('darkred');
-  } else if (time >= 115 && time < 135) { // eva: we're all gonna die
+  } else if (time >= 125 && time < 153) { // eva: we're all gonna die
     frequencyOfShapes = 13;
     setShapeColor('#cf4634');
     setShape('triangle')
     setBG('darkred');
-  } else if (time >= 135 && time < 145) { // fade out scene
+  } else if (time >= 153 && time < 168) { // fade out scene
     setShape('none')
     setBG('white');
-  } else if (time >= 145) { // hospital scene
+  } else if (time >= 168) { // hospital scene
     frequencyOfShapes = 3;
     setShapeColor('#679cf0');
     setShape('circle');

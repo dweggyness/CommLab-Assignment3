@@ -1,6 +1,8 @@
 Site: https://dweggyness.github.io/CommLab-Assignment3/
 
-# Project Name??
+## Project Name: 
+Project to die for
+
 # Project Description: 
 Our project plot was the following: A group of students are working on their Comm Lab audio assignment when they are suddenly interrupted by a fire alarm. They decide to ignore the alarm, assuming it's just a drill, and continue working on their assignment. As soon as Jun catches on that they could be in real danger, it's already too late. Panic overwhelms them as they find Jun fainted on the ground from the excess of smoke, which ultimately leads everyone surrounding him in the hospital, awaiting his awakening. 
 
